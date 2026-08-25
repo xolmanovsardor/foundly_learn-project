@@ -1,0 +1,41 @@
+from app.listings.repository import ListingRepository
+
+class ListingService:
+    def __init__(self, repository: ListingRepository):
+        self.repository = repository
+
+    def get_listings(self, search: str = None, type: str = None, page: int = 1, page_size: int = 20):
+        return self.repository.get_all_listings(search=search, type=type, page=page, page_size=page_size)
+    from app.listings.schemas import ListingCreateSchema
+
+# ListingService klassining ichiga joylashtiring:
+    def create_listing(self, listing_data: ListingCreateSchema, user_id: int):
+        return self.repository.create_new_listing(listing_data, user_id)
+from fastapi import HTTPException, status
+from app.listings.repository import ListingRepository
+
+class ListingService:
+    def __init__(self, repository: ListingRepository):
+        self.repository = repository
+
+    # 404 xatoligi tekshiruvi [oxdFQS]
+    def get_single_listing(self, listing_id: int):
+        listing = self.repository.get_listing_by_id(listing_id)
+        if not listing:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, 
+                detail="E'lon topilmadi!"  # 404 xatosi [oxdFQS]
+            )
+        return listing
+
+    # 409 xatoligi tekshiruvi [oxdFQS]
+    def claim_listing(self, listing_id: int):
+        listing = self.get_single_listing(listing_id) # Oldin 404 likka tekshiradi [oxdFQS]
+        
+        if listing.status == "CLAIMED":
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT, 
+                detail="Bu e'lon allaqachon claim qilingan!"  # 409 xatosi [oxdFQS]
+            )
+            
+        return self.repository.update_to_claimed(listing)
