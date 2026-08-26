@@ -40,7 +40,7 @@ class UserService:
         
         # Token muddati (1 kunga amal qiladi)
         expire = datetime.now(timezone.utc) + timedelta(days=1)
-        payload = {"sub": str(user.id), "exp": expire}
+        payload = {"email": user.email, "exp": expire}
         
         # .env ichidagi kalit orqali token shifrlanadi
         token = jwt.encode(payload, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)

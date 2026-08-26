@@ -16,10 +16,9 @@ class Settings(BaseSettings):
     DB_PASSWORD: str
     DB_NAME: str
 
-    # --- SHU IKKI QATORNI QO'SHING ---
+    # JWT (Token) sozlamalari
     JWT_SECRET_KEY: str
-    JWT_ALGORITHM: str = "HS256"  # Defaut qiymat qilib HS256 belgilaymiz
-    # ---------------------------------
+    JWT_ALGORITHM: str = "HS256"
 
     # Dinamik ravishda PostgreSQL DATABASE_URL yaratish
     @property
@@ -30,7 +29,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env", 
         env_file_encoding="utf-8",
-        extra="allow"  
+        extra="allow"
     )
 
 settings = Settings()
