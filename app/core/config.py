@@ -16,6 +16,11 @@ class Settings(BaseSettings):
     DB_PASSWORD: str
     DB_NAME: str
 
+    # --- SHU IKKI QATORNI QO'SHING ---
+    JWT_SECRET_KEY: str
+    JWT_ALGORITHM: str = "HS256"  # Defaut qiymat qilib HS256 belgilaymiz
+    # ---------------------------------
+
     # Dinamik ravishda PostgreSQL DATABASE_URL yaratish
     @property
     def DATABASE_URL(self) -> str:
@@ -25,7 +30,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env", 
         env_file_encoding="utf-8",
-        extra="allow"  # Ortiqcha kalitlar kelsa xato bermasligi uchun
+        extra="allow"  
     )
 
 settings = Settings()
